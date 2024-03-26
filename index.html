@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue Popup Form</title>
+    
+    
+    <style>
+         /* Стили для оформления страницы и попапа */
+         .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+            display: block;
+        }
+
+        .popup {
+            max-width: 500px;
+            padding: 20px;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .form {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .form input {
+            margin-bottom: 10px;
+            padding: 5px;
+            width: calc(50% - 10px);
+            box-sizing: border-box;
+        }
+
+        .btn {
+            padding: 5px 10px;
+            background: blue;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .menu {
+            background: #333;
+            color: white;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .menu a {
+            color: white;
+            margin: 0 10px;
+            text-decoration: none;
+        }
+
+        .page-content {
+            margin-top: 50px;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <div class="menu">
+        <a @click="showPage('home')">Главная</a>
+        <a @click="showPage('popup')">Попап</a>
+    </div>
+
+    <div class="page-content" v-show="currentPage === 'home'">
+        <h1>Главная страница</h1>
+    </div>
+
+    <div class="page-content" v-show="currentPage === 'popup'">
+        <button @click="openPopup">Начать</button>
+
+        <div class="overlay" v-show="isPopupOpen"  @click="closePopup">
+            <div class="popup" @click.stop>
+                <h2>Введите данные:</h2>
+                <form class="form" @submit.prevent="submitForm">
+                    <input type="text" placeholder="Имя" v-model="formData.name">
+                    <input type="text" placeholder="Фамилия" v-model="formData.lastName">
+                    <input type="text" placeholder="Email" v-model="formData.email">
+                    <input type="text" placeholder="Телефон" v-model="formData.phone">
+                    <input type="text" placeholder="Адрес" v-model="formData.address">
+                    <button type="submit">Отправить</button>
+                </form>
+            </div>
+        </div>
+    <div v-if="jsonResult !== ''">
+        <h3>Введенные данные в форму:</h3>
+        <pre id="json-data">{{ jsonResult }}</pre>
+    </div>
+</div>
+
+<script src="https://unpkg.com/vue@3"></script>
+<script src="app.js"></script>
+</body>
+</html>
